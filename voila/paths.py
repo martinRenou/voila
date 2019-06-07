@@ -20,7 +20,7 @@ DEV_MODE = os.path.exists(os.path.join(ROOT, '../setup.py')) and os.path.exists(
 notebook_path_regex = r'(.*\.ipynb)'
 
 
-def collect_paths(app_names, template_name='default', subdir=None, include_root_paths=True, prune=True, root_dirs=None):
+def collect_paths(app_names, template_name='default', subdir=None, include_root_paths=True, prune=False, root_dirs=None):
     """
     Voila supports custom templates for rendering notebooks.
     For a specified template name, `collect_paths` can be used to collects
