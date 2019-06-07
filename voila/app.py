@@ -45,7 +45,7 @@ from jupyter_core.paths import jupyter_config_path, jupyter_path
 
 from ipython_genutils.py3compat import getcwd
 
-from .paths import ROOT, STATIC_ROOT, collect_template_paths, notebook_path_regex
+from .paths import ROOT, STATIC_ROOT, collect_paths, notebook_path_regex
 from .handler import VoilaHandler
 from .treehandler import VoilaTreeHandler
 from ._version import __version__
@@ -157,20 +157,11 @@ class Voila(Application):
         )
     )
 
-    nbconvert_template_paths = List(
-        [],
-        config=True,
-        help=_(
-            'path to nbconvert templates'
-        )
-    )
-
     template_paths = List(
         [],
-        allow_none=True,
         config=True,
         help=_(
-            'path to nbconvert templates'
+            'path to jinja2 templates'
         )
     )
 
@@ -333,13 +324,10 @@ class Voila(Application):
 
     def setup_template_dirs(self):
         if self.voila_configuration.template:
-            collect_template_paths(
-                self.nbconvert_template_paths,
-                self.static_paths,
-                self.template_paths,
-                self.voila_configuration.template)
+            template_name = self.voila_configuration.template
+            self.template_paths = collect_paths(['voila', 'nbconvert'], template_name)
+            self.static_paths = collect_paths(['voila', 'nbconvert'], template_name, 'resources', include_root_paths=False)
         self.log.debug('using template: %s', self.voila_configuration.template)
-        self.log.debug('nbconvert template paths:\n\t%s', '\n\t'.join(self.nbconvert_template_paths))
         self.log.debug('template paths:\n\t%s', '\n\t'.join(self.template_paths))
         self.log.debug('static paths:\n\t%s', '\n\t'.join(self.static_paths))
         if self.notebook_path and not os.path.exists(self.notebook_path):
@@ -432,7 +420,7 @@ class Voila(Application):
                 VoilaHandler,
                 {
                     'notebook_path': os.path.relpath(self.notebook_path, self.root_dir),
-                    'nbconvert_template_paths': self.nbconvert_template_paths,
+                    'template_paths': self.template_paths,
                     'config': self.config,
                     'voila_configuration': self.voila_configuration
                 }
@@ -444,7 +432,7 @@ class Voila(Application):
                 (url_path_join(self.server_url, r'/voila/tree' + path_regex), VoilaTreeHandler),
                 (url_path_join(self.server_url, r'/voila/render' + notebook_path_regex), VoilaHandler,
                     {
-                        'nbconvert_template_paths': self.nbconvert_template_paths,
+                        'template_paths': self.template_paths,
                         'config': self.config,
                         'voila_configuration': self.voila_configuration
                     }),

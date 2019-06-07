@@ -79,7 +79,7 @@ class NPM(Command):
 
     node_modules = os.path.join(node_root, 'node_modules')
 
-    template_root = os.path.join(here, 'share', 'jupyter', 'voila', 'templates', 'default', 'static')
+    template_root = os.path.join(here, 'share', 'jupyter', 'templates', 'voila', 'default', 'resources')
     targets = [
         os.path.join(template_root, 'voila.js')
     ]
@@ -182,9 +182,9 @@ class FetchCSS(Command):
         return buf.getvalue()
 
     def run(self):
-        css_dest = os.path.join('share', 'jupyter', 'voila', 'templates', 'default', 'static', 'index.css')
-        theme_light_dest = os.path.join('share', 'jupyter', 'voila', 'templates', 'default', 'static', 'theme-light.css')
-        theme_dark_dest = os.path.join('share', 'jupyter', 'voila', 'templates', 'default', 'static', 'theme-dark.css')
+        css_dest = os.path.join('share', 'jupyter', 'templates', 'voila', 'default', 'resources', 'index.css')
+        theme_light_dest = os.path.join('share', 'jupyter', 'templates', 'voila', 'default', 'resources', 'theme-light.css')
+        theme_dark_dest = os.path.join('share', 'jupyter', 'templates', 'voila', 'default', 'resources', 'theme-dark.css')
 
         try:
             css = self._download(css_url)
@@ -198,7 +198,7 @@ class FetchCSS(Command):
             return
 
         try:
-            os.mkdir(os.path.join('share', 'jupyter', 'voila', 'templates', 'default', 'static'))
+            os.mkdir(os.path.join('share', 'jupyter', 'templates', 'voila', 'default', 'resources'))
         except OSError:  # Use FileExistsError from python 3.3 onward.
             pass
         with open(css_dest, 'wb+') as f:
@@ -252,7 +252,7 @@ def get_data_files():
         ('share/jupyter/nbextensions/voila', ['voila/static/extension.js'])
     ]
     # Add all the templates
-    for (dirpath, dirnames, filenames) in os.walk('share/jupyter/voila/templates/'):
+    for (dirpath, dirnames, filenames) in os.walk('share/jupyter/templates/voila/'):
         if filenames:
             data_files.append((dirpath, [os.path.join(dirpath, filename) for filename in filenames]))
     return data_files

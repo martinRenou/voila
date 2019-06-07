@@ -67,4 +67,4 @@ class VoilaExporter(HTMLExporter):
 
     @traitlets.default('template_file')
     def default_template_file(self):
-        return 'voila.tpl'
+        return 'index.html'

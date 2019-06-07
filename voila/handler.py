@@ -20,7 +20,7 @@ class VoilaHandler(JupyterHandler):
 
     def initialize(self, **kwargs):
         self.notebook_path = kwargs.pop('notebook_path', [])    # should it be []
-        self.nbconvert_template_paths = kwargs.pop('nbconvert_template_paths', [])
+        self.template_paths = kwargs.pop('template_paths', [])
         self.exporter_config = kwargs.pop('config', None)
         self.voila_configuration = kwargs['voila_configuration']
 
@@ -66,7 +66,7 @@ class VoilaHandler(JupyterHandler):
         }
 
         exporter = VoilaExporter(
-            template_path=self.nbconvert_template_paths,
+            template_path=self.template_paths,
             config=self.exporter_config,
             contents_manager=self.contents_manager  # for the image inlining
         )
