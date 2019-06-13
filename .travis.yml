@@ -20,7 +20,6 @@ before_install:
   - conda create -q -n test-environment -c conda-forge python=$PYTHON_VERSION jupyter_server==0.0.5 jupyterlab_pygments==0.1.0 pytest==3.10.1 nbconvert=5.5 pytest-cov nodejs flake8 ipywidgets
   - source activate test-environment
 install:
-  - pip install https://github.com/maartenbreddels/voila-gridstack/archive/refactor_templates.zip
   - pip install ".[test]"
   - cd tests/test_template; pip install .; cd ../../;
 before_script:
