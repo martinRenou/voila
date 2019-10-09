@@ -8,12 +8,16 @@
 #############################################################################
 
 import os
+import socket
 
 import tornado.web
+
+from ipython_genutils.importstring import import_item
 
 from jupyter_server.base.handlers import JupyterHandler
 from jupyter_server.config_manager import recursive_update
 from jupyter_server.utils import url_path_join
+
 import nbformat
 
 from nbconvert.preprocessors import ClearOutputPreprocessor
@@ -30,6 +34,40 @@ def filter_empty_code_cells(cell, exporter):
         or not exporter.exclude_input                   # keep cell if input not excluded
     )
 
+voila_ports = set()
+
+def find_available_port(ip):
+    global voila_ports
+
+    while True:
+        sock = socket.socket()
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, b'\0' * 8)
+        sock.bind((ip, 0))
+        port = sock.getsockname()[1]
+        sock.close()
+
+        if port not in voila_ports:
+            voila_ports.add(port)
+
+            return port
+
+
+def create_kernel_manager_factory(kernel_manager_class):
+    kernel_manager_ctor = import_item(kernel_manager_class)
+
+    def create_kernel_manager(*args, **kwargs):
+        km = kernel_manager_ctor(*args, **kwargs)
+
+        km.shell_port = find_available_port(km.ip)
+        km.iopub_port = find_available_port(km.ip)
+        km.stdin_port = find_available_port(km.ip)
+        km.hb_port = find_available_port(km.ip)
+        km.control_port = find_available_port(km.ip)
+
+        return km
+
+    return create_kernel_manager
+
 
 class VoilaHandler(JupyterHandler):
 
@@ -40,6 +78,8 @@ class VoilaHandler(JupyterHandler):
         self.voila_configuration = kwargs['voila_configuration']
         # we want to avoid starting multiple kernels due to template mistakes
         self.kernel_started = False
+
+        self.kernel_manager.kernel_manager_factory = create_kernel_manager_factory(self.kernel_manager.kernel_manager_class)
 
     @tornado.web.authenticated
     @tornado.gen.coroutine
