@@ -13,6 +13,9 @@ import os
 from typing import Dict
 
 import tornado.web
+
+from jupyter_core.paths import jupyter_path
+from jupyterlab_server.config import get_page_config, recursive_update
 from jupyter_server.base.handlers import JupyterHandler
 from jupyter_server.utils import url_path_join
 from nbclient.util import ensure_async
@@ -25,7 +28,38 @@ from .query_parameters_handler import QueryStringSocketHandler
 from .utils import ENV_VARIABLE
 
 
-class VoilaHandler(JupyterHandler):
+class PageConfigMixin:
+    def get_page_config(self):
+        page_config = {
+            "appVersion": __version__,
+            "baseUrl": self.base_url,
+            "terminalsAvailable": False,
+            "fullStaticUrl": url_path_join(self.base_url, "voila/static"),
+            "fullLabextensionsUrl": url_path_join(self.base_url, "voila/labextensions"),
+        }
+
+        mathjax_config = self.settings.get("mathjax_config", "TeX-AMS_HTML-full,Safe")
+        # TODO Remove CDN usage.
+        mathjax_url = self.settings.get(
+            "mathjax_url",
+            "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js",
+        )
+        page_config.setdefault("mathjaxConfig", mathjax_config)
+        page_config.setdefault("fullMathjaxUrl", mathjax_url)
+
+        labextensions_path = jupyter_path('labextensions')
+        recursive_update(
+            page_config,
+            get_page_config(
+                labextensions_path,
+                logger=self.log,
+            ),
+        )
+        return page_config
+
+
+class VoilaHandler(JupyterHandler, PageConfigMixin):
+
     def initialize(self, **kwargs):
         self.notebook_path = kwargs.pop('notebook_path', [])  # should it be []
         self.template_paths = kwargs.pop('template_paths', [])
@@ -125,6 +159,7 @@ class VoilaHandler(JupyterHandler):
                 contents_manager=self.contents_manager,
                 base_url=self.base_url,
                 kernel_spec_manager=self.kernel_spec_manager,
+                page_config=self.get_page_config()
             )
 
             await gen.initialize(template=template_arg, theme=theme_arg)

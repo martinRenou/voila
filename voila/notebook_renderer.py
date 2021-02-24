@@ -40,8 +40,9 @@ class NotebookRenderer(LoggingConfigurable):
         self.config_manager = kwargs.get('config_manager')
         self.contents_manager = kwargs.get('contents_manager')
         self.kernel_spec_manager = kwargs.get('kernel_spec_manager')
-        self.default_kernel_name = 'python3'
         self.base_url = kwargs.get('base_url')
+        self.page_config = kwargs.get('page_config')
+        self.default_kernel_name = 'python3'
         self.kernel_started = False
         self.stop_generator = False
         self.rendered_cache: List[str] = []
@@ -49,22 +50,6 @@ class NotebookRenderer(LoggingConfigurable):
     async def initialize(self, **kwargs):
 
         notebook_path = self.notebook_path
-        if self.voila_configuration.enable_nbextensions:
-            # generate a list of nbextensions that are enabled for the classical notebook
-            # a template can use that to load classical notebook extensions, but does not have to
-            notebook_config = self.config_manager.get('notebook')
-            # except for the widget extension itself, since Voilà has its own
-            load_extensions = notebook_config.get('load_extensions', {})
-            if 'jupyter-js-widgets/extension' in load_extensions:
-                load_extensions['jupyter-js-widgets/extension'] = False
-            if 'voila/extension' in load_extensions:
-                load_extensions['voila/extension'] = False
-            nbextensions = [
-                name for name, enabled in load_extensions.items() if enabled
-            ]
-        else:
-            nbextensions = []
-
         self.notebook = await self.load_notebook(notebook_path)
 
         if not self.notebook:
@@ -109,7 +94,6 @@ class NotebookRenderer(LoggingConfigurable):
         # render notebook to html
         self.resources = {
             'base_url': self.base_url,
-            'nbextensions': nbextensions,
             'theme': self.theme,
             'template': self.template_name,
             'metadata': {'name': notebook_name},
@@ -170,7 +154,7 @@ class NotebookRenderer(LoggingConfigurable):
         # render notebook in snippets, then return an iterator so we can flush
         # them out to the browser progressively.
         return self.exporter.generate_from_notebook_node(
-            self.notebook, resources=self.resources, extra_context=extra_context
+            self.notebook, resources=self.resources, extra_context=extra_context, page_config=self.page_config
         )
 
     async def generate_content_hybrid(

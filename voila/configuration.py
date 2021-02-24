@@ -38,7 +38,7 @@ class VoilaConfiguration(traitlets.config.Configurable):
     )
     theme = Unicode('light', config=True)
     strip_sources = Bool(True, config=True, help='Strip sources from rendered html')
-    enable_nbextensions = Bool(False, config=True, help=('Set to True for Voilà to load notebook extensions'))
+    enable_labextensions = Bool(False, config=True, help=('Set to True for Voilà to load JupyterLab extensions'))
 
     file_whitelist = List(
         Unicode(),

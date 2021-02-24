@@ -1,7 +1,7 @@
 {
   "VoilaConfiguration": {
     "template": "test_template",
-    "enable_nbextensions": true
+    "enable_labextensions": true
   },
   "MappingKernelManager": {
     "cull_interval": 10

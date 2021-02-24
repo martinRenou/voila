@@ -80,23 +80,24 @@ def _load_jupyter_server_extension(server_app):
         ),
     ])
 
-    # Serving notebook extensions
-    if voila_configuration.enable_nbextensions:
-        # First look into 'nbextensions_path' configuration key (classic notebook)
-        # and fall back to default path for nbextensions (jupyter server).
-        if 'nbextensions_path' in web_app.settings:
-            nbextensions_path = web_app.settings['nbextensions_path']
+    # Serving lab extensions
+    # TODO: reuse existing lab server endpoint?
+    if voila_configuration.enable_labextensions:
+        # First look into 'labextensions_path' configuration key (classic notebook)
+        # and fall back to default path for labextensions (jupyter server).
+        if 'labextensions_path' in web_app.settings:
+            labextensions_path = web_app.settings['labextensions_path']
         else:
-            nbextensions_path = jupyter_path('nbextensions')
+            labextensions_path = jupyter_path('labextensions')
 
         web_app.add_handlers(host_pattern, [
-            # this handler serves the nbextensions similar to the classical notebook
             (
-                url_path_join(base_url, r'/voila/nbextensions/(.*)'),
+                # TODO: update handler
+                url_path_join(base_url, r'/voila/labextensions/(.*)'),
                 FileFindHandler,
                 {
-                    'path': nbextensions_path,
-                    'no_cache_paths': ['/'],  # don't cache anything in nbextensions
+                    'path': labextensions_path,
+                    'no_cache_paths': ['/'],  # don't cache anything
                 },
             )
         ])

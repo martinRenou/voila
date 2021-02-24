@@ -143,14 +143,14 @@ Instead, it fallbacks to fetching the files from a CDN. This might result in an 
 custom widget has not been published to ``npm``, or when Voilà runs in an environment without an Internet
 connection.
 
-To let the Voilà standalone app serve the nbextensions, use the ``enable_nbextensions`` flag as follows:
+To let the Voilà standalone app serve the lab extensions, use the ``enable_labextensions`` flag as follows:
 
 .. code-block:: bash
 
-   voila --enable_nbextensions=True
+   voila --enable_labextensions=True
 
 When using Voilà as a server extension:
 
 .. code-block:: bash
 
-    jupyter notebook --VoilaConfiguration.enable_nbextensions=True
+    jupyter notebook --VoilaConfiguration.enable_labextensions=True
