@@ -1,10 +1,8 @@
 import {
   JupyterFrontEnd,
-  JupyterFrontEndPlugin
+  JupyterFrontEndPlugin,
+  createRendermimePlugins
 } from '@jupyterlab/application';
-
-// TODO: export from upstream?
-import { createRendermimePlugins } from '@jupyterlab/application/lib/mimerenderers';
 
 import { PageConfig } from '@jupyterlab/coreutils';
 
