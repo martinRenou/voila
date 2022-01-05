@@ -60,8 +60,7 @@ const disabled = ['@jupyter-widgets/jupyterlab-manager'];
 async function main() {
   let mods = [
     // @jupyterlab plugins
-    // TODO: re-add after updating to 3.1 lab packages
-    // require('@jupyterlab/markdownviewer-extension'),
+    require('@jupyterlab/markdownviewer-extension'),
     require('@jupyterlab/mathjax2-extension'),
     require('@jupyterlab/rendermime-extension'),
     // TODO: add the settings endpoint to re-enable the theme plugins?
