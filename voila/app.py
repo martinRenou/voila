@@ -52,7 +52,7 @@ from jupyter_core.paths import jupyter_config_path, jupyter_path
 from ipython_genutils.py3compat import getcwd
 
 from .paths import ROOT, STATIC_ROOT, collect_template_paths, collect_static_paths
-from .handler import VoilaHandler
+from .handler import SettingsHandler, VoilaHandler
 from .treehandler import VoilaTreeHandler
 from ._version import __version__
 from .static_file_handler import MultiStaticFileHandler, TemplateStaticFileHandler, WhiteListFileHandler
@@ -130,7 +130,6 @@ class Voila(Application):
         'theme': 'VoilaConfiguration.theme',
         'base_url': 'Voila.base_url',
         'server_url': 'Voila.server_url',
-        'enable_labextensions': 'VoilaConfiguration.enable_labextensions',
         'show_tracebacks': 'VoilaConfiguration.show_tracebacks',
         'preheat_kernel': 'VoilaConfiguration.preheat_kernel',
         'pool_size': 'VoilaConfiguration.default_pool_size'
@@ -453,6 +452,7 @@ class Voila(Application):
         )
 
         self.app.settings.update(self.tornado_settings)
+        self.app.settings['theme'] = 'light'
 
         handlers = []
 
@@ -481,18 +481,55 @@ class Voila(Application):
                     QueryStringSocketHandler
                 )
             )
-        # Serving notebook extensions
-        if self.voila_configuration.enable_labextensions:
-            handlers.append(
-                (
-                    url_path_join(self.server_url, r'/voila/labextensions/(.*)'),
-                    FileFindHandler,
-                    {
-                        'path': self.labextensions_path,
-                        'no_cache_paths': ['/'],  # don't cache anything in labextensions
-                    },
-                )
+        # Serving lab extensions
+        handlers.append(
+            (
+                url_path_join(self.server_url, r'/voila/labextensions/(.*)'),
+                FileFindHandler,
+                {
+                    'path': self.labextensions_path,
+                    'no_cache_paths': ['/'],  # don't cache anything in labextensions
+                },
             )
+        )
+        # Serving settings
+        handlers.append(
+            (
+                url_path_join(self.server_url, r'/voila/files/api/settings/', '?'),
+                SettingsHandler,
+                {
+                    'app_settings_dir': '/home/martin/miniconda3/envs/voila/share/jupyter/lab/settings',
+                    'schemas_dir': '/home/martin/miniconda3/envs/voila/share/jupyter/lab/schemas',
+                    'settings_dir': '',
+                    'labextensions_path': self.labextensions_path
+                },
+            )
+        )
+        # Serving default themes
+        handlers.append(
+            (
+                url_path_join(self.server_url, r'/voila/files/@jupyterlab/theme-light-extension/(.*)'),
+                FileFindHandler,
+                {
+                    'path': '/home/martin/miniconda3/envs/voila/share/jupyter/lab/themes/@jupyterlab/theme-light-extension',
+                    'no_cache_paths': ['/'],  # don't cache anything in labextensions
+                },
+            )
+        )
+        handlers.append(
+            (
+                url_path_join(self.server_url, r'/voila/files/@jupyterlab/theme-dark-extension/(.*)'),
+                FileFindHandler,
+                {
+                    'path': '/home/martin/miniconda3/envs/voila/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension',
+                    'no_cache_paths': ['/'],  # don't cache anything in labextensions
+                },
+            )
+        )
+
+        # Redirect default themes?
+        # tornado.web.RedirectHandler
+
         handlers.append(
             (
                 url_path_join(self.server_url, r'/voila/files/(.*)'),

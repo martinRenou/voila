@@ -9,15 +9,21 @@
 
 
 import asyncio
+import json
 import os
 from typing import Dict
 
 import tornado.web
 
 from jupyter_core.paths import jupyter_path
-from jupyterlab_server.config import get_page_config, recursive_update
+
 from jupyter_server.base.handlers import JupyterHandler
 from jupyter_server.utils import url_path_join
+
+from jupyterlab_server.config import get_page_config, recursive_update
+from jupyterlab_server.settings_utils import SchemaHandler, get_settings
+from jupyterlab_server.translation_utils import translator
+
 from nbclient.util import ensure_async
 from tornado.httputil import split_host_and_port
 from traitlets.traitlets import Bool
@@ -26,6 +32,42 @@ from ._version import __version__
 from .notebook_renderer import NotebookRenderer
 from .query_parameters_handler import QueryStringSocketHandler
 from .utils import ENV_VARIABLE
+
+
+class SettingsHandler(SchemaHandler):
+    def initialize(
+        self,
+        app_settings_dir,
+        schemas_dir,
+        settings_dir,
+        labextensions_path,
+        **kwargs
+    ):
+        SchemaHandler.initialize(
+            self, app_settings_dir, schemas_dir, settings_dir, labextensions_path
+        )
+
+    def get(self, schema_name=""):
+        """Get setting(s)"""
+        locale = self.get_current_locale()
+        translator.set_locale(locale)
+
+        result, warnings = get_settings(
+            self.app_settings_dir,
+            self.schemas_dir,
+            self.settings_dir,
+            labextensions_path=self.labextensions_path,
+            schema_name=schema_name,
+            overrides=self.overrides,
+            translator=translator.translate_schema
+        )
+
+        # Print all warnings.
+        for w in warnings:
+            if w:
+                self.log.warn(w)
+
+        return self.finish(json.dumps(result))
 
 
 class PageConfigMixin:

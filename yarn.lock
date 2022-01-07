@@ -1313,6 +1313,30 @@
     "@lumino/signaling" "^1.4.3"
     "@lumino/widgets" "^1.19.0"
 
+"@jupyterlab/apputils-extension@^3.2.5":
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/@jupyterlab/apputils-extension/-/apputils-extension-3.2.5.tgz#561a1d98084fb81d7376fd66b8674aee756aac1e"
+  integrity sha512-yFGnNAGSyOWHld2mlDS91L6mqILhzikA1+yge8oDGMyDTI0xH3P9UzrFZx9xrrlVeDW+AzbjZeyylePmJS5PIQ==
+  dependencies:
+    "@jupyterlab/application" "^3.2.5"
+    "@jupyterlab/apputils" "^3.2.5"
+    "@jupyterlab/coreutils" "^5.2.5"
+    "@jupyterlab/docregistry" "^3.2.5"
+    "@jupyterlab/filebrowser" "^3.2.5"
+    "@jupyterlab/mainmenu" "^3.2.5"
+    "@jupyterlab/services" "^6.2.5"
+    "@jupyterlab/settingregistry" "^3.2.5"
+    "@jupyterlab/statedb" "^3.2.5"
+    "@jupyterlab/translation" "^3.2.5"
+    "@jupyterlab/ui-components" "^3.2.5"
+    "@lumino/algorithm" "^1.3.3"
+    "@lumino/commands" "^1.12.0"
+    "@lumino/coreutils" "^1.5.3"
+    "@lumino/disposable" "^1.4.3"
+    "@lumino/polling" "^1.3.3"
+    "@lumino/widgets" "^1.19.0"
+    es6-promise "~4.2.8"
+
 "@jupyterlab/apputils@^3.0.0", "@jupyterlab/apputils@^3.2.5":
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/@jupyterlab/apputils/-/apputils-3.2.5.tgz#72a2b50f4e6956bc4fa342c40dbad7899963c822"
@@ -1635,7 +1659,7 @@
     "@lumino/signaling" "^1.4.3"
     "@lumino/widgets" "^1.19.0"
 
-"@jupyterlab/mainmenu@^3.0.0":
+"@jupyterlab/mainmenu@^3.0.0", "@jupyterlab/mainmenu@^3.2.5":
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/@jupyterlab/mainmenu/-/mainmenu-3.2.5.tgz#9ccd26f57032927cbe1548a2ce2af631eeddcbd9"
   integrity sha512-cHwuGZ8ixqPbeR6Ic8qR1Zy8ypXEUuacw/PzXAzPg3mOx/Oh3mkEwdjjoYWXddY6jPv9Tmt1xaRmp/y74Cdcyw==
@@ -1908,6 +1932,24 @@
     node-fetch "^2.6.0"
     simulate-event "~1.4.0"
     ts-jest "^26.3.0"
+
+"@jupyterlab/theme-dark-extension@^3.2.5":
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/@jupyterlab/theme-dark-extension/-/theme-dark-extension-3.2.5.tgz#a2da94f4a9f8415495918c996dd6d9ad5675037b"
+  integrity sha512-gfvPBs0rjcAbY1RP/UeM3jZ7LRowBKLmNePCPdYB6ph+1vmGhHY5Vq/DuDc0qJ2XeMoE0wd5VhMsA2hRleAPgg==
+  dependencies:
+    "@jupyterlab/application" "^3.2.5"
+    "@jupyterlab/apputils" "^3.2.5"
+    "@jupyterlab/translation" "^3.2.5"
+
+"@jupyterlab/theme-light-extension@^3.2.5":
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/@jupyterlab/theme-light-extension/-/theme-light-extension-3.2.5.tgz#49a64a53247881a4f07ce614d43c27c1afacae83"
+  integrity sha512-Qyu873HcAiwvxFUTVn9GR2+8c6Hsp43e/AYWPRVBKqAOUON0GIUOCbIxt3rBDiY0IevKgKj2KwzKae/nbtYSzA==
+  dependencies:
+    "@jupyterlab/application" "^3.2.5"
+    "@jupyterlab/apputils" "^3.2.5"
+    "@jupyterlab/translation" "^3.2.5"
 
 "@jupyterlab/translation@^3.0.0", "@jupyterlab/translation@^3.2.5":
   version "3.2.5"
@@ -5436,6 +5478,11 @@ es6-iterator@^2.0.3, es6-iterator@~2.0.3:
     d "1"
     es5-ext "^0.10.35"
     es6-symbol "^3.1.1"
+
+es6-promise@~4.2.8:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
+  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
 
 es6-symbol@^3.1.1, es6-symbol@~3.1.3:
   version "3.1.3"

@@ -82,25 +82,24 @@ def _load_jupyter_server_extension(server_app):
 
     # Serving lab extensions
     # TODO: reuse existing lab server endpoint?
-    if voila_configuration.enable_labextensions:
-        # First look into 'labextensions_path' configuration key (classic notebook)
-        # and fall back to default path for labextensions (jupyter server).
-        if 'labextensions_path' in web_app.settings:
-            labextensions_path = web_app.settings['labextensions_path']
-        else:
-            labextensions_path = jupyter_path('labextensions')
+    # First look into 'labextensions_path' configuration key (classic notebook)
+    # and fall back to default path for labextensions (jupyter server).
+    if 'labextensions_path' in web_app.settings:
+        labextensions_path = web_app.settings['labextensions_path']
+    else:
+        labextensions_path = jupyter_path('labextensions')
 
-        web_app.add_handlers(host_pattern, [
-            (
-                # TODO: update handler
-                url_path_join(base_url, r'/voila/labextensions/(.*)'),
-                FileFindHandler,
-                {
-                    'path': labextensions_path,
-                    'no_cache_paths': ['/'],  # don't cache anything
-                },
-            )
-        ])
+    web_app.add_handlers(host_pattern, [
+        (
+            # TODO: update handler
+            url_path_join(base_url, r'/voila/labextensions/(.*)'),
+            FileFindHandler,
+            {
+                'path': labextensions_path,
+                'no_cache_paths': ['/'],  # don't cache anything
+            },
+        )
+    ])
 
 
 # For backward compatibility
