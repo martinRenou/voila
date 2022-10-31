@@ -257,6 +257,19 @@ test.describe('Voila performance Tests', () => {
     expect(await page.screenshot()).toMatchSnapshot(`${notebookName}.png`);
   });
 
+  test('Render and benchmark mimerenderers.ipynb', async ({
+    page,
+    browserName
+  }, testInfo) => {
+    const notebookName = 'mimerenderers';
+    const testFunction = async () => {
+      await page.goto(`/voila/render/${notebookName}.ipynb`);
+      // await page.waitForSelector('div.jupyter-matplotlib-figure');
+    };
+    await addBenchmarkToTest(notebookName, testFunction, testInfo, browserName);
+    expect(await page.screenshot()).toMatchSnapshot(`${notebookName}.png`);
+  });
+
   test('Benchmark the multiple widgets notebook', async ({
     page,
     browserName
@@ -276,6 +289,7 @@ test.describe('Voila performance Tests', () => {
     );
     expect(await page.screenshot()).toMatchSnapshot(`${notebookName}.png`);
   });
+
   test('Render and benchmark query-strings.ipynb', async ({
     page,
     browserName
@@ -298,6 +312,7 @@ test.describe('Voila performance Tests', () => {
     await page.waitForSelector('#MathJax_Message', { state: 'hidden' });
     expect(await page.screenshot()).toMatchSnapshot(`${notebookName}.png`);
   });
+
   test('Render and benchmark reveal.ipynb', async ({
     page,
     browserName

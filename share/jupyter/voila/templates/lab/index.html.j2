@@ -37,6 +37,12 @@
 <div id="rendered_cells" style="display: none">
 {%- endblock body_header -%}
 
+{% block data_priority scoped %}
+<script type="application/vnd.voila.cell-output+json">
+  {{ output | tojson }}
+</script>
+{% endblock data_priority %}
+
 {%- block body_loop -%}
   {# from this point on, the kernel is started #}
 
@@ -62,9 +68,9 @@
     {%- for cell in cell_generator(nb, kernel_id) -%}
       {% set cellloop = loop %}
       {%- block any_cell scoped -%}
-      <script>
-        voila_process({{ cellloop.index }}, {{ cell_count }})
-      </script>
+        <script>
+          voila_process({{ cellloop.index }}, {{ cell_count }})
+        </script>
         {{ super() }}
       {%- endblock any_cell -%}
     {%- endfor -%}
