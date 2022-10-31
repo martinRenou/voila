@@ -88,6 +88,13 @@ class VoilaExporter(HTMLExporter):
         highlight_code = self.filters.get('highlight_code', Highlight2HTML(pygments_lexer=lexer, parent=self))
         self.register_filter('highlight_code', highlight_code)
 
+        # Why do we need this? Should we make this configurable?
+        def trusted_output(output):
+            output["trusted"] = True
+            return output
+
+        self.register_filter('trusted', trusted_output)
+
         # NOTE: we don't call HTML or TemplateExporter' from_notebook_node
         nb_copy, resources = super(TemplateExporter, self).from_notebook_node(nb, resources, **kw)
         resources.setdefault('raw_mimetypes', self.raw_mimetypes)

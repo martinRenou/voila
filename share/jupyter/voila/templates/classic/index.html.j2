@@ -9,8 +9,8 @@
 {%- block html_head_js_jquery -%}
 <script src="{{ resources.jquery_url }}"></script>
 {%- endblock html_head_js_jquery -%}
-{% block notebook_execute %}
 
+{% block notebook_execute %}
     {# Copy so we do not modify the page_config with updates. #}
     {% set page_config_full = page_config.copy() %}
 
@@ -47,6 +47,12 @@
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 {% endblock body_header %}
+
+{% block data_priority scoped %}
+<script type="application/vnd.voila.cell-output+json">
+  {{ output | tojson }}
+</script>
+{% endblock data_priority %}
 
 {%- block footer %}
 {% block footer_js %}

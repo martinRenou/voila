@@ -39,7 +39,7 @@
 
 {% block data_priority scoped %}
 <script type="application/vnd.voila.cell-output+json">
-  {{ output | tojson }}
+  {{ output | trusted | tojson }}
 </script>
 {% endblock data_priority %}
 
