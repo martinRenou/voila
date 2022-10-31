@@ -55,7 +55,7 @@ async function createModule(scope: string, module: string) {
 
 const disabled = [
   '@jupyter-widgets/jupyterlab-manager:plugin',
-  '@jupyter-widgets/jupyterlab-manager:saveWidgetState',
+  '@jupyter-widgets/jupyterlab-manager:saveWidgetState'
 ];
 
 /**

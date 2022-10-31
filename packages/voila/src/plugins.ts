@@ -22,7 +22,10 @@ import { KernelConnection } from '@jupyterlab/services/lib/kernel/default';
 
 import { ITranslator, TranslationManager } from '@jupyterlab/translation';
 
-import { WidgetRenderer, KernelWidgetManager } from '@jupyter-widgets/jupyterlab-manager';
+import {
+  WidgetRenderer,
+  KernelWidgetManager
+} from '@jupyter-widgets/jupyterlab-manager';
 
 import {
   IJupyterWidgetRegistry,
@@ -34,9 +37,9 @@ import { VoilaApp } from './app';
 import { Widget } from '@lumino/widgets';
 
 let resolveManager: (value: KernelWidgetManager) => void;
-const managerPromise: Promise<KernelWidgetManager> = new Promise((resolve) => {
+const managerPromise: Promise<KernelWidgetManager> = new Promise(resolve => {
   resolveManager = resolve;
-})
+});
 
 const WIDGET_MIMETYPE = 'application/vnd.jupyter.widget-view+json';
 
@@ -170,10 +173,7 @@ const renderOutputs: JupyterFrontEndPlugin<void> = {
     cellOutputs.forEach(async cellOutput => {
       const model = JSON.parse(cellOutput.innerHTML);
 
-      const mimeType = rendermime.preferredMimeType(
-        model.data,
-        'any'
-      );
+      const mimeType = rendermime.preferredMimeType(model.data, 'any');
 
       if (!mimeType) {
         return null;
@@ -195,10 +195,7 @@ const renderOutputs: JupyterFrontEndPlugin<void> = {
 
         // Remove mime-type-specific CSS classes
         pre.className = 'lm-Widget jp-RenderedText';
-        pre.setAttribute(
-          'data-mime-type',
-          'application/vnd.jupyter.stderr'
-        );
+        pre.setAttribute('data-mime-type', 'application/vnd.jupyter.stderr');
       });
 
       if (cellOutput.parentElement) {
@@ -212,7 +209,6 @@ const renderOutputs: JupyterFrontEndPlugin<void> = {
     });
   }
 };
-
 
 /**
  * Export the plugins as default.
