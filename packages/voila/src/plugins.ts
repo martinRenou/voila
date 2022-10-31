@@ -167,7 +167,7 @@ const renderOutputs: JupyterFrontEndPlugin<void> = {
   ): Promise<void> => {
     // Render outputs
     const cellOutputs = document.body.querySelectorAll(
-      `script[type="application/vnd.voila.cell-output+json"]`
+      'script[type="application/vnd.voila.cell-output+json"]'
     );
 
     cellOutputs.forEach(async cellOutput => {
@@ -178,7 +178,7 @@ const renderOutputs: JupyterFrontEndPlugin<void> = {
       if (!mimeType) {
         return null;
       }
-      let output = rendermime.createRenderer(mimeType);
+      const output = rendermime.createRenderer(mimeType);
       // const isolated = OutputArea.isIsolated(mimeType, model.metadata);
       // if (isolated === true) {
       //   output = new Private.IsolatedRenderer(output);
