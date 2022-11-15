@@ -198,6 +198,8 @@ const renderOutputs: JupyterFrontEndPlugin<void> = {
         pre.setAttribute('data-mime-type', 'application/vnd.jupyter.stderr');
       });
 
+      output.addClass('jp-OutputArea-output');
+
       if (cellOutput.parentElement) {
         const container = cellOutput.parentElement;
 
