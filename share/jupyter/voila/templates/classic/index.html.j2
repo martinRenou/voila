@@ -32,6 +32,15 @@
 {%- block html_head_css -%}
   {{ resources.include_css("static/materialcolors.css") }}
   {{ resources.include_css("static/labvariables.css") }}
+
+  {#
+    This is a temporary solution, when Notebook 7 is out, the "classic"
+    template should inherit from the "lab" template and get the lab CSS
+    automatically
+  #}
+  {{ resources.include_css("../lab/static/index.css") }}
+  {{ resources.include_css("../lab/static/theme-light.css") }}
+
   <style>
     /*Hide empty cells*/
     .jp-mod-noOutputs.jp-mod-noInput {
