@@ -27,9 +27,7 @@ fs.ensureDirSync(buildDir);
 
 // Copy files to the build directory
 const libDir = path.resolve(__dirname, 'lib');
-const style = path.resolve(__dirname, 'style.css');
 fs.copySync(libDir, buildDir);
-fs.copySync(style, path.resolve(buildDir, 'style.css'));
 
 const extras = Build.ensureAssets({
   packageNames: names,
@@ -38,6 +36,7 @@ const extras = Build.ensureAssets({
 
 // Make a bootstrap entrypoint
 const entryPoint = path.join(buildDir, 'bootstrap.js');
+const styleEntryPoint = path.join(buildDir, 'style.js');
 
 if (process.env.NODE_ENV === 'production') {
   baseConfig.mode = 'production';
@@ -58,7 +57,11 @@ const distRoot = path.resolve(
 module.exports = [
   merge(baseConfig, {
     mode: 'development',
-    entry: ['./publicpath.js', './' + path.relative(__dirname, entryPoint)],
+    entry: [
+      './' + path.relative(__dirname, styleEntryPoint),
+      './publicpath.js',
+      './' + path.relative(__dirname, entryPoint)
+    ],
     output: {
       path: distRoot,
       library: {

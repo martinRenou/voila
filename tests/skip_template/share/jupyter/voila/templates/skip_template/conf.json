@@ -1,5 +1,5 @@
 {
-  "base_template": "classic",
+  "base_template": "lab",
   "preprocessors": {
     "100-remove-skip-voila-cells": {
       "type": "nbconvert.preprocessors.tagremove.TagRemovePreprocessor",

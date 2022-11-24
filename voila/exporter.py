@@ -53,6 +53,18 @@ class VoilaExporter(HTMLExporter):
     # The voila exporter overrides the markdown renderer from the HTMLExporter
     # to inline images.
 
+    @traitlets.validate("template_name")
+    def _validate_template_name(self, template_name):
+        if template_name.value == "classic":
+            raise traitlets.TraitError(
+                """
+                The "classic" template has been removed in Voila 0.5.0,
+                please use the "lab" template with the "--show-margins"
+                option for a similar look
+                """
+            )
+        return template_name.value
+
     @pass_context
     def markdown2html(self, context, source):
         cell = context['cell']

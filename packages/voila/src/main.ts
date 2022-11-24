@@ -12,8 +12,6 @@
 
 // Inspired by: https://github.com/jupyterlab/jupyterlab/blob/master/dev_mode/index.js
 
-import './style.css';
-
 import { PageConfig, URLExt } from '@jupyterlab/coreutils';
 
 import { VoilaApp } from './app';

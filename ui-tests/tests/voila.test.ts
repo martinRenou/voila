@@ -11,21 +11,6 @@ test.describe('Voila performance Tests', () => {
   test.afterEach(async ({ page, browserName }) => {
     await page.close({ runBeforeUnload: true });
   });
-  test('Render tree classic', async ({ page, browserName }, testInfo) => {
-    const testFunction = async () => {
-      await page.goto('?voila-template=classic');
-      // wait for page to load
-      await page.waitForSelector('.list-header');
-    };
-    await addBenchmarkToTest(
-      'voila-tree-classic',
-      testFunction,
-      testInfo,
-      browserName
-    );
-
-    expect(await page.screenshot()).toMatchSnapshot('voila-tree-classic.png');
-  });
 
   test('Render tree light theme', async ({ page, browserName }, testInfo) => {
     const testFunction = async () => {
@@ -73,28 +58,6 @@ test.describe('Voila performance Tests', () => {
     );
 
     expect(await page.screenshot()).toMatchSnapshot('voila-tree-miami.png');
-  });
-
-  test('Render and benchmark basics.ipynb with classic template', async ({
-    page,
-    browserName
-  }, testInfo) => {
-    const notebookName = 'basics';
-    const testFunction = async () => {
-      await page.goto(
-        `/voila/render/${notebookName}.ipynb?voila-template=classic`
-      );
-      // wait for the widgets to load
-      await page.waitForSelector('span[role="presentation"] >> text=x');
-    };
-    await addBenchmarkToTest(notebookName, testFunction, testInfo, browserName);
-
-    // wait for the final MathJax message to be hidden
-    await page.$('text=Typesetting math: 100%');
-    await page.waitForSelector('#MathJax_Message', { state: 'hidden' });
-    expect(await page.screenshot()).toMatchSnapshot(
-      `${notebookName}-classic.png`
-    );
   });
 
   test('Render and benchmark basics.ipynb', async ({
@@ -166,13 +129,6 @@ test.describe('Voila performance Tests', () => {
     await page.waitForSelector('.voila-error');
 
     expect(await page.screenshot()).toMatchSnapshot('404.png');
-  });
-
-  test('Render 404 error with classic template', async ({ page }) => {
-    await page.goto('/voila/render/unknown.ipynb?voila-template=classic');
-    await page.waitForSelector('.voila-error');
-
-    expect(await page.screenshot()).toMatchSnapshot('404-classic.png');
   });
 
   test('Render 404 error with dark theme', async ({ page }) => {

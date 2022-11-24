@@ -6,7 +6,7 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 
 
-@pytest.fixture(params=['lab', 'classic'])
+@pytest.fixture(params=['lab'])
 def voila_args_extra(request):
     return [f'--template={request.param}']
 

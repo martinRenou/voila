@@ -68,21 +68,15 @@ def collect_paths(
                 if not prune or os.path.exists(path):
                     paths.append(path)
                     found_at_least_one = True
-            # for app_name in app_names:
-            #     app_dir = os.path.join(root_dir, app_name, 'templates')
-            #     # we include app_dir for when we want to be explicit, but less than root_dir, e.g.
-            #     # {% extends 'classic/base.html' %}
-            #     paths.append(app_dir)
-            #     full_paths.append(app_dir)  # only used for error msg
     if include_root_paths:
         for root_dir in root_dirs:
             # we include root_dir for when we want to be very explicit, e.g.
-            # {% extends 'nbconvert/templates/classic/base.html' %}
+            # {% extends 'nbconvert/templates/lab/base.html' %}
             paths.append(root_dir)
             for app_name in app_names:
                 app_dir = os.path.join(root_dir, app_name, 'templates')
                 # we include app_dir for when we want to be explicit, but less than root_dir, e.g.
-                # {% extends 'classic/base.html' %}
+                # {% extends 'lab/base.html' %}
                 paths.append(app_dir)
 
     if not found_at_least_one:
