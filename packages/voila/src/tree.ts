@@ -22,9 +22,8 @@ import {
   pathsPlugin,
   themePlugin,
   themesManagerPlugin,
-  translatorPlugin,
-  widgetManager
-} from './voilaplugins';
+  translatorPlugin
+} from './plugins';
 
 /**
  * The main function
@@ -37,7 +36,6 @@ async function main() {
     pathsPlugin,
     translatorPlugin,
     themePlugin,
-    widgetManager,
     themesManagerPlugin,
     treeWidgetPlugin
   ];
